@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+const TaskTrek = () => {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = () => {
+    if (newTask.trim()) {
+      setTasks([
+        ...tasks, 
+        {
+          id: Date.now(), 
+          text: newTask, 
+          completed: false
+        }
+      ]);
+      setNewTask(''); // Clear input after adding
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">TaskTrek</h1>
+      
+      <div className="flex mb-4">
+        <input 
+          type="text" 
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          placeholder="Enter a new task" 
+          className="flex-grow p-2 border rounded-l"
+        />
+        <button 
+          onClick={addTask}
+          className="bg-blue-500 text-white p-2 rounded-r"
         >
-          Learn React
-        </a>
-      </header>
+          Add
+        </button>
+      </div>
+
+      <div>
+        {tasks.map(task => (
+          <div 
+            key={task.id} 
+            className="flex items-center bg-white p-2 border-b"
+          >
+            {task.text}
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default TaskTrek;
